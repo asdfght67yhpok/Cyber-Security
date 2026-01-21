@@ -123,6 +123,12 @@
             return { threats: [], scannedElements: 0 };
         }
 
+        // Check Whitelist
+        if (window.WhitelistManager && window.WhitelistManager.isWhitelisted(window.location.href)) {
+            console.log('🛡️ Dark Pattern Shield: Site is whitelisted. Scanning skipped.');
+            return { threats: [], scannedElements: 0, isWhitelisted: true };
+        }
+
         console.log('🛡️ Dark Pattern Shield: Scanning page...');
 
         try {

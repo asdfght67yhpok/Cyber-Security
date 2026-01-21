@@ -197,7 +197,19 @@ class PopupController {
         // Update patterns list
         const patternsList = document.getElementById('patternsList');
         if (patternsList) {
-            if (threats.length === 0) {
+            if (results.isWhitelisted) {
+                patternsList.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">✅</div>
+            <p>Trusted Website</p>
+            <span class="empty-hint">This site is whitelisted</span>
+          </div>
+        `;
+                // Update stats to show secure
+                const threatCount = document.getElementById('threatCount');
+                if (threatCount) threatCount.innerHTML = '<span style="color:var(--success)">✓</span>';
+
+            } else if (threats.length === 0) {
                 patternsList.innerHTML = `
           <div class="empty-state">
             <div class="empty-icon">🛡️</div>
