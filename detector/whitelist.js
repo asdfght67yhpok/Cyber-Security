@@ -19,6 +19,10 @@ const WhitelistManager = {
         /^https?:\/\/(www\.)?microsoft\.com/i,
         /^https?:\/\/(www\.)?apple\.com/i,
 
+        // E-commerce (Added for testing)
+        /^https?:\/\/(www\.)?amazon\.in/i,
+        /^https?:\/\/(www\.)?amazon\.com/i,
+
         // Localhost/Dev (Optional, keep enabled for testing usually, but whitelisting for now as example)
         // /^http:\/\/localhost/i,
         // /^http:\/\/127\.0\.0\.1/i
