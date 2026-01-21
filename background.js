@@ -41,6 +41,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             handleScanComplete(message.results, sender.tab);
             break;
 
+        case 'phishingDetected':
+            handlePhishingDetected(message.results, sender.tab);
+            break;
+
         case 'getStats':
             sendResponse(stats);
             break;
@@ -66,6 +70,24 @@ function handleScanComplete(results, tab) {
         updateBadge(tab?.id, results.threats);
     } else {
         clearBadge(tab?.id);
+    }
+}
+
+// Handle phishing detection
+function handlePhishingDetected(results, tab) {
+    console.log('🚨 Phishing detected:', results);
+
+    // Update badge with special color for phishing
+    if (tab?.id) {
+        chrome.action.setBadgeText({
+            tabId: tab.id,
+            text: '⚠️'
+        });
+
+        chrome.action.setBadgeBackgroundColor({
+            tabId: tab.id,
+            color: '#dc2626'  // Darker red for phishing
+        });
     }
 }
 

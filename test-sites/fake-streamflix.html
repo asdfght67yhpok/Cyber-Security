@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamFlix - Watch Unlimited Movies & Shows</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #141414;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .header {
+            padding: 20px 50px;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+        }
+
+        .logo {
+            font-size: 36px;
+            font-weight: bold;
+            color: #e50914;
+            letter-spacing: 2px;
+        }
+
+        .container {
+            max-width: 450px;
+            margin: 80px auto;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 60px 70px;
+            border-radius: 8px;
+        }
+
+        .premium-badge {
+            background: linear-gradient(135deg, #c79100 0%, #ffd700 100%);
+            color: #000;
+            padding: 15px 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            color: #ccc;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .alert {
+            background: rgba(229, 9, 20, 0.2);
+            border-left: 4px solid #e50914;
+            padding: 15px;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px 20px;
+            background: #333;
+            border: 1px solid #555;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        input::placeholder {
+            color: #8c8c8c;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #e50914;
+            background: #454545;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 18px;
+            background: #e50914;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background: #f40612;
+        }
+
+        .features {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid #333;
+        }
+
+        .features h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        .feature-item:before {
+            content: "✓";
+            color: #e50914;
+            font-weight: bold;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #666;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo">STREAMFLIX</div>
+    </div>
+
+    <div class="container">
+        <div class="premium-badge">
+            ⭐ PREMIUM ACCESS - 30 DAYS FREE TRIAL
+        </div>
+
+        <h1>Welcome Back</h1>
+        <p class="subtitle">Continue watching your favorite shows</p>
+
+        <div class="alert">
+            ⚠️ Your trial period expires in 24 hours. Login to avoid losing access!
+        </div>
+
+        <form>
+            <div class="form-group">
+                <input type="email" placeholder="Email or phone number" required>
+            </div>
+
+            <div class="form-group">
+                <input type="password" placeholder="Password" required>
+            </div>
+
+            <button type="submit" class="btn">Sign In & Start Watching</button>
+        </form>
+
+        <div class="features">
+            <h3>🎬 What's Included:</h3>
+            <div class="feature-item">Unlimited movies, TV shows, and more</div>
+            <div class="feature-item">Watch on any device - phone, tablet, TV</div>
+            <div class="feature-item">Download and watch offline</div>
+            <div class="feature-item">No commitments, cancel anytime</div>
+        </div>
+
+        <div class="footer">
+            © 2024 StreamFlix Entertainment. All Rights Reserved.
+        </div>
+    </div>
+</body>
+
+</html>

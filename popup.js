@@ -158,13 +158,19 @@ class PopupController {
             const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
             if (tab && tab.id) {
+                // Request dark pattern scan
                 const response = await chrome.tabs.sendMessage(tab.id, {
                     action: 'scan',
                     settings: this.settings
                 });
 
+                // Also request phishing/security status
+                const statusResponse = await chrome.tabs.sendMessage(tab.id, {
+                    action: 'getStatus'
+                });
+
                 if (response) {
-                    this.displayResults(response);
+                    this.displayResults(response, statusResponse);
                 }
             }
         } catch (error) {
@@ -179,15 +185,24 @@ class PopupController {
     }
 
     // Display scan results
-    displayResults(results) {
+    displayResults(results, statusResponse) {
         const { threats, scannedElements } = results;
+
+        // Check if there's an active phishing threat from statusResponse
+        const hasPhishingThreat = statusResponse?.phishingThreat || false;
+        const totalThreats = threats.length + (hasPhishingThreat ? 1 : 0);
 
         // Update stats
         const threatCount = document.getElementById('threatCount');
         const scanCount = document.getElementById('scanCount');
 
         if (threatCount) {
-            this.animateNumber(threatCount, threats.length);
+            if (hasPhishingThreat) {
+                // Show red warning for phishing
+                threatCount.innerHTML = `<span style="color: #ef4444; font-weight: bold;">⚠️ ${totalThreats}</span>`;
+            } else {
+                this.animateNumber(threatCount, threats.length);
+            }
         }
 
         if (scanCount) {
@@ -197,7 +212,70 @@ class PopupController {
         // Update patterns list
         const patternsList = document.getElementById('patternsList');
         if (patternsList) {
-            if (results.isWhitelisted) {
+            // Check for phishing threat first
+            if (hasPhishingThreat) {
+                const phishingHTML = `
+          <div class="pattern-item expanded phishing-alert" style="animation-delay: 0s; border: 2px solid #ef4444; background: rgba(239, 68, 68, 0.05);">
+            <div class="pattern-header">
+              <div class="pattern-icon" style="font-size: 32px;">🚨</div>
+              <div class="pattern-title">
+                <div class="pattern-type" style="color: #ef4444; font-size: 18px;">PHISHING THREAT DETECTED</div>
+                <span class="pattern-confidence high">${statusResponse.phishingLevel || 90}% threat level</span>
+              </div>
+            </div>
+            <div class="pattern-details">
+              <div class="pattern-why">
+                <strong style="color: #ef4444;">⚠️ This appears to be a fake website:</strong>
+                <p>${statusResponse.phishingReason || 'This website shows characteristics of a phishing attempt designed to steal your information.'}</p>
+              </div>
+              ${statusResponse.phishingDomain ? `
+              <div class="pattern-where" style="margin-top: 12px;">
+                <strong>🌐 Current domain:</strong>
+                <p class="detected-text" style="color: #ef4444;">${this.escapeHtml(statusResponse.phishingDomain)}</p>
+              </div>
+              ` : ''}
+            </div>
+          </div>
+        `;
+
+                // If there are also dark patterns, show both
+                if (threats.length > 0) {
+                    patternsList.innerHTML = phishingHTML + threats.map((threat, index) => `
+            <div class="pattern-item expanded" style="animation-delay: ${(index + 1) * 0.1}s" data-element-id="${threat.elementId}">
+              <div class="pattern-header">
+                <div class="pattern-icon">${this.getPatternIcon(threat.type)}</div>
+                <div class="pattern-title">
+                  <div class="pattern-type">${threat.type}</div>
+                  <span class="pattern-confidence ${threat.confidence >= 70 ? 'high' : threat.confidence >= 50 ? 'medium' : 'low'}">${threat.confidence}% confidence</span>
+                </div>
+              </div>
+              <div class="pattern-details">
+                <div class="pattern-why">
+                  <strong>⚠️ Why this is a dark pattern:</strong>
+                  <p>${threat.description || this.getPatternDescription(threat.type)}</p>
+                </div>
+                <div class="pattern-where">
+                  <strong>📍 Detected text:</strong>
+                  <p class="detected-text">"${this.escapeHtml(threat.text)}"</p>
+                </div>
+              </div>
+              <button class="jump-btn" data-element-id="${threat.elementId}">🔍 Jump to Element</button>
+            </div>
+          `).join('');
+                } else {
+                    patternsList.innerHTML = phishingHTML;
+                }
+
+                // Add jump button handlers
+                patternsList.querySelectorAll('.jump-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const elementId = btn.dataset.elementId;
+                        this.notifyContentScript({ action: 'highlight', elementId });
+                    });
+                });
+
+            } else if (results.isWhitelisted) {
                 patternsList.innerHTML = `
           <div class="empty-state">
             <div class="empty-icon">✅</div>

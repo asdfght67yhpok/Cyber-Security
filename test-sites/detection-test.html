@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing Detection Test Suite</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 40px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            color: #4ec9b0;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #858585;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .test-section {
+            background: #252526;
+            border-left: 4px solid #007acc;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .test-section h2 {
+            color: #4fc1ff;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .test-result {
+            background: #1e1e1e;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #3c3c3c;
+        }
+
+        .test-url {
+            color: #ce9178;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .detected {
+            color: #4ec9b0;
+            margin-left: 20px;
+        }
+
+        .detected.true {
+            color: #f48771;
+        }
+
+        .detected.false {
+            color: #6a9955;
+        }
+
+        .threat-details {
+            margin-left: 20px;
+            padding-left: 10px;
+            border-left: 2px solid #4fc1ff;
+            margin-top: 10px;
+        }
+
+        .threat-item {
+            margin: 8px 0;
+            padding: 8px;
+            background: #2d2d30;
+            border-radius: 3px;
+        }
+
+        .severity {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .severity.high {
+            background: #f48771;
+            color: #000;
+        }
+
+        .severity.medium {
+            background: #dcdcaa;
+            color: #000;
+        }
+
+        .severity.low {
+            background: #4ec9b0;
+            color: #000;
+        }
+
+        .property {
+            color: #9cdcfe;
+        }
+
+        .value {
+            color: #ce9178;
+        }
+
+        .loading {
+            text-align: center;
+            color: #858585;
+            padding: 40px;
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #007acc;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="status">🛡️ Extension Loaded</div>
+
+    <h1>🔒 Phishing Detection Test Suite</h1>
+    <p class="subtitle">Automatic test of all detection methods in PhishingDetector</p>
+
+    <div id="results">
+        <div class="loading">⏳ Running tests... (Extension must be loaded)</div>
+    </div>
+
+    <script>
+        // Wait for extension to load
+        setTimeout(() => {
+            runAllTests();
+        }, 1000);
+
+        function runAllTests() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+
+            // Check if PhishingDetector is available
+            if (typeof PhishingDetector === 'undefined') {
+                resultsDiv.innerHTML = `
+                    <div class="test-section" style="border-left-color: #f48771;">
+                        <h2>❌ Extension Not Loaded</h2>
+                        <p style="color: #f48771;">PhishingDetector not found. Make sure the Dark Pattern Shield extension is loaded!</p>
+                        <p style="margin-top: 10px;">Go to chrome://extensions and reload the extension.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Test 1: Typosquatting
+            addTestSection('1️⃣ Typosquatting Detection', [
+                { url: 'amaz0n.com', test: () => PhishingDetector.checkTyposquatting('amaz0n.com') },
+                { url: 'faceb00k.com', test: () => PhishingDetector.checkTyposquatting('faceb00k.com') },
+                { url: 'g00gle.com', test: () => PhishingDetector.checkTyposquatting('g00gle.com') },
+                { url: 'paypa1.com', test: () => PhishingDetector.checkTyposquatting('paypa1.com') },
+                { url: 'netfl1x.com', test: () => PhishingDetector.checkTyposquatting('netfl1x.com') },
+            ]);
+
+            // Test 2: Suspicious TLD
+            addTestSection('2️⃣ Suspicious TLD (Domain Extension)', [
+                { url: 'secure-login.tk', test: () => PhishingDetector.checkSuspiciousTLD('secure-login.tk') },
+                { url: 'paypal.ml', test: () => PhishingDetector.checkSuspiciousTLD('paypal.ml') },
+                { url: 'amazon.xyz', test: () => PhishingDetector.checkSuspiciousTLD('amazon.xyz') },
+                { url: 'banking.ga', test: () => PhishingDetector.checkSuspiciousTLD('banking.ga') },
+                { url: 'login.click', test: () => PhishingDetector.checkSuspiciousTLD('login.click') },
+            ]);
+
+            // Test 3: Suspicious Subdomain
+            addTestSection('3️⃣ Suspicious Subdomain Detection', [
+                { url: 'amazon-login.evil.com', test: () => PhishingDetector.checkSuspiciousSubdomain('amazon-login.evil.com') },
+                { url: 'paypal-secure.fake.com', test: () => PhishingDetector.checkSuspiciousSubdomain('paypal-secure.fake.com') },
+                { url: 'google-signin.suspicious.com', test: () => PhishingDetector.checkSuspiciousSubdomain('google-signin.suspicious.com') },
+                { url: 'facebook-recovery.scam.net', test: () => PhishingDetector.checkSuspiciousSubdomain('facebook-recovery.scam.net') },
+            ]);
+
+            // Test 4: IP Address Detection
+            addTestSection('4️⃣ IP Address Detection', [
+                { url: '192.168.1.1', test: () => PhishingDetector.checkIPAddress('192.168.1.1') },
+                { url: '45.123.45.67', test: () => PhishingDetector.checkIPAddress('45.123.45.67') },
+                { url: '10.0.0.1', test: () => PhishingDetector.checkIPAddress('10.0.0.1') },
+            ]);
+
+            // Test 5: Domain Similarity
+            addTestSection('5️⃣ Domain Similarity Detection', [
+                { url: 'amazn.com', test: () => PhishingDetector.checkDomainSimilarity('amazn.com') },
+                { url: 'gogle.com', test: () => PhishingDetector.checkDomainSimilarity('gogle.com') },
+                { url: 'facbook.com', test: () => PhishingDetector.checkDomainSimilarity('facbook.com') },
+            ]);
+
+            // Test 6: Full URL Analysis
+            addTestSection('6️⃣ Full URL Analysis (Combined Detection)', [
+                { url: 'http://amaz0n.com', test: () => PhishingDetector.analyze('http://amaz0n.com'), fullAnalysis: true },
+                { url: 'http://secure-bank.tk', test: () => PhishingDetector.analyze('http://secure-bank.tk'), fullAnalysis: true },
+                { url: 'http://amazon-login.evil.com', test: () => PhishingDetector.analyze('http://amazon-login.evil.com'), fullAnalysis: true },
+            ]);
+        }
+
+        function addTestSection(title, tests) {
+            const resultsDiv = document.getElementById('results');
+
+            const section = document.createElement('div');
+            section.className = 'test-section';
+
+            let html = `<h2>${title}</h2>`;
+
+            tests.forEach(({ url, test, fullAnalysis }) => {
+                const result = test();
+
+                html += `<div class="test-result">`;
+                html += `<div class="test-url">🔗 ${url}</div>`;
+
+                if (fullAnalysis) {
+                    // Full analysis result
+                    html += `<div class="detected ${result.isPhishing ? 'true' : 'false'}">`;
+                    html += `<span class="property">isPhishing:</span> <span class="value">${result.isPhishing}</span><br>`;
+                    html += `<span class="property">threatLevel:</span> <span class="value">${result.threatLevel}%</span>`;
+                    html += `</div>`;
+
+                    if (result.threats && result.threats.length > 0) {
+                        html += `<div class="threat-details">`;
+                        html += `<strong>Detected Threats:</strong>`;
+                        result.threats.forEach(threat => {
+                            const severityClass = threat.severity >= 80 ? 'high' : threat.severity >= 60 ? 'medium' : 'low';
+                            html += `<div class="threat-item">`;
+                            html += `<span class="severity ${severityClass}">${threat.severity}%</span> `;
+                            html += `<strong>${threat.type}</strong><br>`;
+                            html += `${threat.details || threat.description}`;
+                            html += `</div>`;
+                        });
+                        html += `</div>`;
+                    }
+                } else {
+                    // Individual check result
+                    html += `<div class="detected ${result.detected ? 'true' : 'false'}">`;
+                    html += `<span class="property">detected:</span> <span class="value">${result.detected}</span>`;
+                    html += `</div>`;
+
+                    if (result.detected) {
+                        const severityClass = result.severity >= 80 ? 'high' : result.severity >= 60 ? 'medium' : 'low';
+                        html += `<div class="threat-details">`;
+                        html += `<span class="severity ${severityClass}">${result.severity}%</span><br>`;
+                        html += `<strong>${result.type}</strong><br>`;
+                        html += `${result.details || result.description}`;
+                        html += `</div>`;
+                    }
+                }
+
+                html += `</div>`;
+            });
+
+            section.innerHTML = html;
+            resultsDiv.appendChild(section);
+        }
+    </script>
+</body>
+
+</html>

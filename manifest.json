@@ -39,8 +39,11 @@
                 "detector/patterns.js",
                 "detector/nlp.js",
                 "detector/whitelist.js",
+                "detector/phishing.js",
+                "detector/content-analyzer.js",
                 "detector/analyzer.js",
                 "ui/overlay.js",
+                "ui/threat-alert.js",
                 "content.js"
             ],
             "css": [

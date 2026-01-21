@@ -21,6 +21,11 @@
     function init() {
         console.log('🛡️ Dark Pattern Shield: Initializing...');
 
+        // Initialize threat alert system first
+        if (window.ThreatAlertManager) {
+            window.ThreatAlertManager.init();
+        }
+
         // Initialize overlay system
         if (window.OverlayManager) {
             window.OverlayManager.init();
@@ -28,6 +33,9 @@
 
         // Load saved settings
         loadSettings();
+
+        // Check for phishing threats FIRST (before regular scanning)
+        checkPhishingThreat();
 
         // Initial scan after page loads
         if (document.readyState === 'complete') {
@@ -106,12 +114,120 @@
                 return true;
 
             case 'getStatus':
+                // Check if there's an active phishing threat
+                let phishingInfo = {
+                    phishingThreat: false,
+                    phishingLevel: 0,
+                    phishingReason: '',
+                    phishingDomain: window.location.hostname
+                };
+
+                // Check if threat alert is currently showing
+                if (window.ThreatAlertManager && window.ThreatAlertManager.isAlertShowing && window.ThreatAlertManager.isAlertShowing()) {
+                    phishingInfo.phishingThreat = true;
+                    if (window.ThreatAlertManager.currentThreat) {
+                        const threat = window.ThreatAlertManager.currentThreat;
+                        phishingInfo.phishingLevel = threat.threatLevel || 90;
+                        // Get first threat description
+                        if (threat.threats && threat.threats.length > 0) {
+                            phishingInfo.phishingReason = threat.threats[0].details || threat.threats[0].description;
+                        }
+                    }
+                }
+
                 sendResponse({
                     isActive,
                     settings,
-                    lastScan: lastScanResults
+                    lastScan: lastScanResults,
+                    ...phishingInfo
                 });
                 return true;
+        }
+    }
+
+    /**
+     * Check for phishing threats
+     */
+    function checkPhishingThreat() {
+        if (!isActive) return;
+
+        // Skip if whitelisted
+        if (window.WhitelistManager && window.WhitelistManager.isWhitelisted(window.location.href)) {
+            console.log('🛡️ Dark Pattern Shield: Site is whitelisted, skipping phishing check');
+            return;
+        }
+
+        // Run URL-based phishing detection
+        let finalResult = null;
+        if (window.PhishingDetector) {
+            const currentUrl = window.location.href;
+            const urlResult = window.PhishingDetector.analyze(currentUrl);
+
+            console.log('🛡️ Dark Pattern Shield: URL analysis result', urlResult);
+
+            finalResult = urlResult;
+
+            // If URL-based detection found high threat, show immediately
+            if (urlResult.isPhishing && urlResult.threatLevel >= 70) {
+                showThreatAlert(urlResult);
+                return;
+            }
+        }
+
+        // Run content-based detection (after page loads)
+        if (window.ContentAnalyzer) {
+            setTimeout(() => {
+                if (!isActive) return;
+
+                try {
+                    const contentResult = window.ContentAnalyzer.analyzePage();
+                    console.log('🛡️ Dark Pattern Shield: Content analysis result', contentResult);
+
+                    // Combine with URL result
+                    if (finalResult) {
+                        // Merge threats
+                        contentResult.threats = [...(finalResult.threats || []), ...(contentResult.threats || [])];
+                        contentResult.threatLevel = Math.max(finalResult.threatLevel, contentResult.threatLevel);
+                        contentResult.isPhishing = contentResult.threatLevel >= 70;
+                        contentResult.domain = finalResult.domain || window.location.hostname;
+                        contentResult.url = window.location.href;
+                    }
+
+                    // Show alert if combined threat is high
+                    if (contentResult.isPhishing && contentResult.threatLevel >= 70) {
+                        showThreatAlert(contentResult);
+                    } else if (contentResult.threatLevel > 0) {
+                        console.log(`🛡️ Dark Pattern Shield: Moderate threat detected (${contentResult.threatLevel}%), monitoring...`);
+                    }
+                } catch (e) {
+                    console.error('🛡️ Dark Pattern Shield: Content analysis error', e);
+                }
+            }, 2000); // Wait 2 seconds for page to load
+        }
+    }
+
+    /**
+     * Show threat alert and notify background
+     */
+    function showThreatAlert(result) {
+        console.log('🛡️ Dark Pattern Shield: HIGH THREAT DETECTED - Showing alert');
+
+        if (window.ThreatAlertManager) {
+            window.ThreatAlertManager.show(result);
+        }
+
+        // Notify background script
+        try {
+            chrome.runtime.sendMessage({
+                action: 'phishingDetected',
+                results: {
+                    domain: result.domain || window.location.hostname,
+                    threatLevel: result.threatLevel,
+                    url: window.location.href
+                }
+            });
+        } catch (e) {
+            console.error('Failed to notify background:', e);
         }
     }
 

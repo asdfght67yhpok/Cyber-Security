@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureBank Online - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 450px;
+            width: 100%;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: #2a5298;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2a5298;
+        }
+
+        .alert {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 4px;
+        }
+
+        .alert-icon {
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .alert-text {
+            color: #856404;
+            font-size: 14px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #2a5298;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: #2a5298;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #1e3c72;
+        }
+
+        .links {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .links a {
+            color: #2a5298;
+            text-decoration: none;
+            font-size: 14px;
+            display: inline-block;
+            margin: 0 10px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">
+            <div class="logo-icon">🏦</div>
+            <div class="logo-text">SecureBank</div>
+        </div>
+
+        <div class="alert">
+            <span class="alert-icon">⚠️</span>
+            <span class="alert-text"><strong>Action Required:</strong> Unusual login detected. Please verify your
+                identity.</span>
+        </div>
+
+        <h1>Account Login</h1>
+
+        <form>
+            <div class="form-group">
+                <label for="username">Username or Email</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <button type="submit" class="btn">Sign In Securely</button>
+        </form>
+
+        <div class="links">
+            <a href="#">Forgot Password?</a>
+            <a href="#">Register Account</a>
+        </div>
+
+        <div class="footer">
+            © 2024 SecureBank Online Banking. All rights reserved.
+        </div>
+    </div>
+</body>
+
+</html>

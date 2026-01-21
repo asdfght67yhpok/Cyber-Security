@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopMart - Premium Online Shopping</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f7f8fa;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            padding: 15px 40px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: white;
+            padding: 50px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .urgency-banner {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .urgency-banner h2 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .urgency-banner p {
+            font-size: 14px;
+            opacity: 0.95;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #444;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #ff6b6b;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .benefits {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+
+        .benefits h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        .benefits ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .benefits li {
+            padding: 8px 0;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .benefits li:before {
+            content: "✓ ";
+            color: #ff6b6b;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 13px;
+            color: #999;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo">🛒 ShopMart</div>
+    </div>
+
+    <div class="container">
+        <div class="urgency-banner">
+            <h2>🎁 LIMITED TIME OFFER!</h2>
+            <p>Login now to claim your exclusive 50% discount! Only 3 spots remaining!</p>
+        </div>
+
+        <h1>Sign In to Continue</h1>
+        <p class="subtitle">Access your premium shopping account</p>
+
+        <form>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="your@email.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+
+            <button type="submit" class="btn">Sign In Now →</button>
+        </form>
+
+        <div class="benefits">
+            <h3>🌟 Premium Member Benefits:</h3>
+            <ul>
+                <li>Free shipping on all orders</li>
+                <li>Exclusive early access to sales</li>
+                <li>Reward points on every purchase</li>
+                <li>24/7 priority customer support</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            © 2024 ShopMart Premium Shopping. Trusted by millions.
+        </div>
+    </div>
+</body>
+
+</html>
