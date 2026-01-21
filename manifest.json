@@ -1,0 +1,54 @@
+{
+  "manifest_version": 3,
+  "name": "Dark Pattern Shield",
+  "version": "1.0.0",
+  "description": "AI-powered browser extension that detects and warns you about deceptive dark patterns in real-time. Protect your privacy and make informed decisions online.",
+  "author": "Dark Pattern Shield Team",
+  
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "Dark Pattern Shield"
+  },
+  
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting"
+  ],
+  
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["detector/patterns.js", "detector/nlp.js", "detector/analyzer.js", "ui/overlay.js", "content.js"],
+      "css": ["ui/styles.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/*", "ui/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

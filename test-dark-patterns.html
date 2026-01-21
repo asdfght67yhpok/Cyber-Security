@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Pattern Test Page - Dark Pattern Shield Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.1rem;
+        }
+
+        .info-banner {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .info-banner p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .pattern-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .pattern-section h2 {
+            font-size: 1.2rem;
+            color: #f87171;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pattern-section h2::before {
+            content: '⚠️';
+        }
+
+        .pattern-description {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .pattern-example {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        /* Cookie Banner */
+        .cookie-banner {
+            background: linear-gradient(135deg, #1e1e32 0%, #252540 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .cookie-banner p {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .cookie-buttons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-accept {
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-reject {
+            padding: 8px 12px;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.75rem;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* Confirmshaming */
+        .confirmshaming-modal {
+            background: #1e1e32;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .confirmshaming-modal h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+        }
+
+        .confirmshaming-modal p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+
+        .btn-shame-accept {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+        .btn-shame-decline {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        /* Urgency */
+        .urgency-box {
+            background: linear-gradient(135deg, #991b1b 0%, #dc2626 100%);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .urgency-timer {
+            font-size: 2.5rem;
+            font-weight: 700;
+            font-family: monospace;
+            margin: 16px 0;
+        }
+
+        .urgency-box p {
+            margin-bottom: 8px;
+        }
+
+        /* Scarcity */
+        .scarcity-product {
+            background: #1e1e32;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .product-image {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-info h4 {
+            margin-bottom: 8px;
+        }
+
+        .scarcity-warning {
+            color: #f87171;
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+
+        .viewing-now {
+            color: #fbbf24;
+            font-size: 0.85rem;
+        }
+
+        /* Tricky Wording */
+        .tricky-form {
+            background: #1e1e32;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        .form-group input[type="checkbox"] {
+            margin-top: 4px;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Hidden Costs */
+        .checkout-summary {
+            background: #1e1e32;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .checkout-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .checkout-item:last-child {
+            border-bottom: none;
+        }
+
+        .checkout-item.fee {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+        }
+
+        .checkout-item.total {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #34d399;
+            padding-top: 16px;
+        }
+
+        /* Preselection */
+        .preselection-form {
+            background: #1e1e32;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .preselection-form h4 {
+            margin-bottom: 16px;
+        }
+
+        /* Newsletter popup simulation */
+        .newsletter-popup {
+            background: linear-gradient(135deg, #1e1e32 0%, #252540 100%);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .newsletter-popup h3 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .newsletter-popup .offer {
+            color: #34d399;
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 16px 0;
+        }
+
+        .newsletter-popup input[type="email"] {
+            width: 100%;
+            padding: 14px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 12px;
+        }
+
+        .newsletter-popup .btn-subscribe {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-bottom: 16px;
+        }
+
+        .newsletter-popup .btn-decline {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>🛡️ Dark Pattern Shield Test Page</h1>
+            <p class="subtitle">Examples of common dark patterns for testing the extension</p>
+        </header>
+
+        <div class="info-banner">
+            <p>💡 Install the Dark Pattern Shield extension and refresh this page to see dark patterns detected and
+                highlighted!</p>
+        </div>
+
+        <!-- Cookie Banner Dark Pattern -->
+        <section class="pattern-section">
+            <h2>Cookie Banner Manipulation</h2>
+            <p class="pattern-description">Visual disparity between accept and reject options</p>
+            <div class="pattern-example">
+                <div class="cookie-banner" id="cookieBanner">
+                    <p>We use cookies to enhance your experience. By continuing to use this site, you agree to our use
+                        of cookies and tracking technologies.</p>
+                    <div class="cookie-buttons">
+                        <button class="btn-accept">Accept All Cookies</button>
+                        <button class="btn-reject">manage preferences</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Confirmshaming -->
+        <section class="pattern-section">
+            <h2>Confirmshaming</h2>
+            <p class="pattern-description">Guilt-tripping language to pressure users</p>
+            <div class="pattern-example">
+                <div class="confirmshaming-modal">
+                    <h3>🎁 Get 20% Off Your First Order!</h3>
+                    <p>Subscribe to our newsletter and save big on your next purchase.</p>
+                    <button class="btn-shame-accept">Yes! I want to save money</button>
+                    <button class="btn-shame-decline">No thanks, I prefer paying full price</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fake Urgency -->
+        <section class="pattern-section">
+            <h2>Fake Urgency</h2>
+            <p class="pattern-description">Countdown timers and time pressure tactics</p>
+            <div class="pattern-example">
+                <div class="urgency-box">
+                    <p>⚡ FLASH SALE - LIMITED TIME ONLY!</p>
+                    <div class="urgency-timer" id="countdown">02:59:47</div>
+                    <p>🔥 Hurry! This deal expires soon. Don't miss out!</p>
+                    <p>Only 3 hours left to claim your discount!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scarcity -->
+        <section class="pattern-section">
+            <h2>Fake Scarcity</h2>
+            <p class="pattern-description">False claims about limited availability</p>
+            <div class="pattern-example">
+                <div class="scarcity-product">
+                    <div class="product-image">📦</div>
+                    <div class="product-info">
+                        <h4>Premium Widget Pro</h4>
+                        <p>$99.99 <span style="text-decoration: line-through; color: #888;">$149.99</span></p>
+                        <p class="scarcity-warning">⚠️ Only 2 left in stock - order soon!</p>
+                        <p class="viewing-now">👀 47 people are viewing this right now</p>
+                        <p style="font-size: 0.85rem; color: #f87171;">🔥 12 sold in the last hour</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tricky Wording -->
+        <section class="pattern-section">
+            <h2>Tricky Wording</h2>
+            <p class="pattern-description">Confusing double-negatives and opt-out language</p>
+            <div class="pattern-example">
+                <div class="tricky-form">
+                    <div class="form-group">
+                        <input type="checkbox" id="check1" checked>
+                        <label for="check1">Uncheck this box if you do not want to not receive our newsletter</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="check2">
+                        <label for="check2">Check this box to opt-out of not sharing your data with third-party
+                            partners</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="check3" checked>
+                        <label for="check3">I agree to receive promotional emails and special offers from our
+                            partners</label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hidden Costs -->
+        <section class="pattern-section">
+            <h2>Hidden Costs</h2>
+            <p class="pattern-description">Fees revealed only at checkout</p>
+            <div class="pattern-example">
+                <div class="checkout-summary">
+                    <div class="checkout-item">
+                        <span>Product Subtotal</span>
+                        <span>$49.99</span>
+                    </div>
+                    <div class="checkout-item fee">
+                        <span>Processing Fee</span>
+                        <span>+$3.99</span>
+                    </div>
+                    <div class="checkout-item fee">
+                        <span>Service Fee</span>
+                        <span>+$2.50</span>
+                    </div>
+                    <div class="checkout-item fee">
+                        <span>Handling Fee</span>
+                        <span>+$1.99</span>
+                    </div>
+                    <div class="checkout-item fee">
+                        <span>Platform Fee</span>
+                        <span>+$4.99</span>
+                    </div>
+                    <div class="checkout-item fee">
+                        <span>Taxes (estimated)</span>
+                        <span>+$5.47</span>
+                    </div>
+                    <div class="checkout-item total">
+                        <span>Total</span>
+                        <span>$68.93</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Preselection -->
+        <section class="pattern-section">
+            <h2>Preselection / Bad Defaults</h2>
+            <p class="pattern-description">Options pre-selected against user interest</p>
+            <div class="pattern-example">
+                <div class="preselection-form">
+                    <h4>Complete Your Order</h4>
+                    <div class="form-group">
+                        <input type="checkbox" id="insurance" checked>
+                        <label for="insurance">Add Premium Protection Plan (+$19.99/month) -
+                            <em>Recommended!</em></label>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="newsletter2" checked>
+                        <label for="newsletter2">Subscribe to our newsletter and receive special offers</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="partners" checked>
+                        <label for="partners">Share my information with trusted third-party partners</label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Popup -->
+        <section class="pattern-section">
+            <h2>Forced Action + Confirmshaming Combo</h2>
+            <p class="pattern-description">Must subscribe to continue + guilt-trip decline</p>
+            <div class="pattern-example">
+                <div class="newsletter-popup">
+                    <h3>Wait! Before You Go...</h3>
+                    <p>Subscribe to unlock exclusive content!</p>
+                    <div class="offer">GET 50% OFF</div>
+                    <input type="email" placeholder="Enter your email">
+                    <button class="btn-subscribe">Yes, I want to save 50%!</button>
+                    <button class="btn-decline">No thanks, I don't like saving money</button>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>This is a test page for the Dark Pattern Shield browser extension.</p>
+            <p>All examples are intentionally designed to demonstrate common dark patterns.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Fake countdown timer
+        function updateCountdown() {
+            const el = document.getElementById('countdown');
+            if (!el) return;
+
+            let [h, m, s] = el.textContent.split(':').map(Number);
+            s--;
+            if (s < 0) { s = 59; m--; }
+            if (m < 0) { m = 59; h--; }
+            if (h < 0) { h = 23; m = 59; } // Reset - it's fake anyway!
+
+            el.textContent = [h, m, s].map(n => n.toString().padStart(2, '0')).join(':');
+        }
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+
+</html>
